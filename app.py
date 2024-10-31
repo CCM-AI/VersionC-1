@@ -315,7 +315,7 @@ with tab4:
 with tab5:
     st.header("Unified Care Plan")
     if st.session_state['results']:
-        st.write("### Suggested Patient-Friendly Care Plan")
+        st.write("### Suggested Care Plan")
         patient_care_plan = patient_friendly_care_plan(st.session_state['results'])
         st.write(patient_care_plan)
 
@@ -326,49 +326,6 @@ with tab5:
             care_plan_table = create_unified_care_plan_table(condition, risk)
             st.dataframe(care_plan_table)
             
-        # Create a video library for the unified care plan
-        st.write("### Video Library")
-        st.write("Here are some useful videos on health management:")        
-
-     # Unified Care Plan Tab for Videos
-        st.subheader("Unified Care Plan with Video Resources")
-        video_resources = {
-            "Cardiovascular": [
-                "https://www.youtube.com/watch?v=example1",
-                "https://www.youtube.com/watch?v=example2"
-            ],
-            "Diabetes": [
-                "https://www.youtube.com/watch?v=example3",
-                "https://www.youtube.com/watch?v=example4"
-            ],
-            "COPD": [
-                "https://www.youtube.com/watch?v=example5",
-                "https://www.youtube.com/watch?v=example6"
-            ],
-            "Asthma": [
-                "https://www.youtube.com/watch?v=example7",
-                "https://www.youtube.com/watch?v=example8"
-            ]
-        }
-# Unified Care Plan Tab
-with tab5:
-    st.header("Unified Care Plan")
-    if st.session_state['results']:
-        st.write("### Suggested Patient-Friendly Care Plan")
-        patient_care_plan = patient_friendly_care_plan(st.session_state['results'])
-        st.write(patient_care_plan)
-
-        # Create a comprehensive table for the unified care plan
-        st.write("### Care Plan Targets Table")
-        for condition, risk in st.session_state['results'].items():
-            st.write(f"#### Care Plan for {condition} - Risk Level: {risk}")
-            care_plan_table = create_unified_care_plan_table(condition, risk)
-            st.dataframe(care_plan_table)
-            
-        # Create a video library for the unified care plan
-        st.write("### Video Library")
-        st.write("Here are some useful videos on health management:")        
-
         # Unified Care Plan Tab for Videos
         st.subheader("Unified Care Plan with Video Resources")
         video_resources = {
