@@ -190,140 +190,143 @@ def create_unified_care_plan_table(condition, risk):
                 "Target": ["FEV1", "Exacerbations"],
                 "Goal": ["> 70%", "< 2 per year"],
                 "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every visit"],
+                "Monitoring": ["Every 3 months", "Every month"],
                 "Notes": [
-                    "- Avoid smoking and secondhand smoke exposure.\n"
-                    "- Attend pulmonary rehabilitation sessions.\n"
+                    "- Attend pulmonary rehab sessions regularly.\n"
+                    "- Avoid secondhand smoke and pollutants.\n"
                 ]
             }
         else:
             data = {
                 "Target": ["FEV1"],
-                "Goal": ["> 70%"],
+                "Goal": ["> 60%"],
                 "Time Frame": ["Ongoing"],
                 "Monitoring": ["Biannual"],
                 "Notes": [
-                    "- Stay active with light exercises recommended by your doctor.\n"
-                    "- Monitor breathing and report any changes to your doctor.\n"
+                    "- Engage in breathing exercises daily.\n"
+                    "- Participate in low-impact activities like walking.\n"
                 ]
             }
 
     elif condition == "Asthma":
         if risk == "High":
             data = {
-                "Target": ["Symptom Frequency", "Nighttime Symptoms"],
-                "Goal": ["< 2 days/week", "0 per month"],
+                "Target": ["Symptom Control", "Medication Adherence"],
+                "Goal": ["< 2 days/week", "100%"],
                 "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every visit"],
+                "Monitoring": ["Every month", "Every month"],
                 "Notes": [
-                    "- Follow your asthma action plan strictly.\n"
-                    "- Avoid known triggers and allergens.\n"
+                    "- Keep a symptom diary to track triggers.\n"
+                    "- Regularly review inhaler technique.\n"
                 ]
             }
         else:
             data = {
-                "Target": ["Symptom Frequency"],
-                "Goal": ["< 2 days/week"],
+                "Target": ["Symptom Control"],
+                "Goal": ["< 2 uses/week"],
                 "Time Frame": ["Ongoing"],
-                "Monitoring": ["Every 3-6 months"],
+                "Monitoring": ["Every 3 months"],
                 "Notes": [
-                    "- Ensure you have your rescue inhaler accessible at all times.\n"
-                    "- Stay informed about your condition through reputable resources.\n"
+                    "- Stay away from known allergens and triggers.\n"
+                    "- Incorporate relaxation techniques like yoga.\n"
                 ]
             }
 
     df = pd.DataFrame(data)
     return df
 
-# Title of the application
-st.title("Chronic Disease Management Assistant")
+# Streamlit application starts here
+st.title("Health Risk Assessment Tool")
 
-# Inputs for cardiovascular risk calculation
-st.header("Cardiovascular Risk Assessment")
-age = st.number_input("Age", min_value=1, max_value=120, value=30)
-systolic_bp = st.number_input("Systolic Blood Pressure", min_value=50, max_value=300, value=120)
-smoker = st.selectbox("Are you a smoker?", ["Yes", "No"]) == "Yes"
-cholesterol = st.number_input("Cholesterol Level", min_value=100, max_value=300, value=200)
+# Define sidebar for navigation
+st.sidebar.title("Navigation")
+tabs = ["Home", "Risk Assessment", "Video Library"]
+selected_tab = st.sidebar.radio("Select a tab:", tabs)
 
-if st.button("Calculate Cardiovascular Risk"):
+if selected_tab == "Home":
+    st.header("Welcome to the Health Risk Assessment Tool")
+    st.write(
+        "This tool helps you assess your health risks and provides tailored management strategies. "
+        "Please use the navigation options in the sidebar to proceed."
+    )
+
+elif selected_tab == "Risk Assessment":
+    st.header("Risk Assessment")
+    st.subheader("Cardiovascular Risk Assessment")
+    
+    # Input fields for cardiovascular risk assessment
+    age = st.number_input("Enter Age:", min_value=0, max_value=120, value=30)
+    systolic_bp = st.number_input("Enter Systolic Blood Pressure:", min_value=80, max_value=200, value=120)
+    smoker = st.checkbox("Are you a smoker?")
+    cholesterol = st.number_input("Enter Cholesterol Level:", min_value=100, max_value=400, value=200)
+
+    # Cardio risk calculation
     cardio_risk = calculate_cardio_risk(age, systolic_bp, smoker, cholesterol)
-    st.success(f"Your Cardiovascular Risk Level: {cardio_risk}")
+    
+    st.subheader("Diabetes Risk Assessment")
+    
+    # Input fields for diabetes risk assessment
+    bmi = st.number_input("Enter BMI:", min_value=10.0, max_value=50.0, value=25.0)
+    family_history = st.checkbox("Family history of diabetes?")
+    fasting_glucose = st.number_input("Enter Fasting Glucose:", min_value=60, max_value=400, value=100)
+    hba1c = st.number_input("Enter HbA1c Level:", min_value=4.0, max_value=14.0, value=5.5)
 
-# Inputs for diabetes risk calculation
-st.header("Diabetes Risk Assessment")
-bmi = st.number_input("BMI", min_value=10, max_value=50, value=25)
-family_history = st.selectbox("Family History of Diabetes?", ["Yes", "No"]) == "Yes"
-fasting_glucose = st.number_input("Fasting Glucose Level", min_value=60, max_value=300, value=90)
-hba1c = st.number_input("HbA1c Level", min_value=4.0, max_value=14.0, value=5.5)
-
-if st.button("Calculate Diabetes Risk"):
+    # Diabetes risk calculation
     diabetes_risk = calculate_diabetes_risk(bmi, age, family_history, fasting_glucose, hba1c)
-    st.success(f"Your Diabetes Risk Level: {diabetes_risk}")
 
-# Inputs for COPD risk calculation
-st.header("COPD Risk Assessment")
-smoking_years = st.number_input("Years of Smoking", min_value=0, max_value=100, value=10)
-fev1 = st.number_input("FEV1 (L)", min_value=0.5, max_value=10.0, value=2.0)
-exacerbations_last_year = st.number_input("Exacerbations Last Year", min_value=0, max_value=20, value=1)
+    st.subheader("COPD Risk Assessment")
+    
+    # Input fields for COPD risk assessment
+    smoking_years = st.number_input("Years of Smoking:", min_value=0, max_value=60, value=0)
+    fev1 = st.number_input("Enter FEV1 (L):", min_value=0.0, max_value=5.0, value=2.5)
+    exacerbations_last_year = st.number_input("Exacerbations Last Year:", min_value=0, max_value=10, value=0)
 
-if st.button("Calculate COPD Risk"):
+    # COPD risk calculation
     copd_risk = calculate_copd_risk(smoking_years, age, fev1, exacerbations_last_year)
-    st.success(f"Your COPD Risk Level: {copd_risk}")
 
-# Inputs for asthma risk calculation
-st.header("Asthma Risk Assessment")
-frequency_of_symptoms = st.number_input("Frequency of Symptoms (days/week)", min_value=0, max_value=7, value=1)
-nighttime_symptoms = st.number_input("Nighttime Symptoms (times/month)", min_value=0, max_value=30, value=0)
-inhaler_use = st.number_input("Inhaler Use (times/week)", min_value=0, max_value=7, value=1)
-eosinophil_count = st.number_input("Eosinophil Count", min_value=0, max_value=1000, value=200)
+    st.subheader("Asthma Risk Assessment")
+    
+    # Input fields for asthma risk assessment
+    frequency_of_symptoms = st.number_input("Frequency of Symptoms (days/month):", min_value=0, max_value=30, value=0)
+    nighttime_symptoms = st.number_input("Nighttime Symptoms (nights/month):", min_value=0, max_value=30, value=0)
+    inhaler_use = st.number_input("Inhaler Use (times/month):", min_value=0, max_value=100, value=0)
+    eosinophil_count = st.number_input("Eosinophil Count:", min_value=0, max_value=1000, value=300)
 
-if st.button("Calculate Asthma Risk"):
+    # Asthma risk calculation
     asthma_risk = calculate_asthma_risk(frequency_of_symptoms, nighttime_symptoms, inhaler_use, fev1, eosinophil_count)
-    st.success(f"Your Asthma Risk Level: {asthma_risk}")
 
-# Aggregating results
-if st.button("Get Summary"):
+    # Compile results
     results = {
         "Cardiovascular": cardio_risk,
         "Diabetes": diabetes_risk,
         "COPD": copd_risk,
         "Asthma": asthma_risk
     }
-    
-    st.subheader("Summary of Risk Levels")
-    for condition, risk in results.items():
-        st.write(f"{condition}: {risk}")
 
-    st.subheader("AI Assistant Recommendations")
+    # Display risk levels and care plans
     for condition, risk in results.items():
+        st.subheader(f"{condition} Risk Level: {risk}")
         st.markdown(ai_assistant_response(condition, risk))
+        st.markdown(patient_friendly_care_plan({condition: risk}))
 
-    st.subheader("Patient-Friendly Care Plans")
-    care_plan = patient_friendly_care_plan(results)
-    st.markdown(care_plan)
-
-    st.subheader("Unified Care Plan")
-    for condition, risk in results.items():
+        # Create and display the unified care plan table
         care_plan_table = create_unified_care_plan_table(condition, risk)
-        st.write(f"### Unified Care Plan for {condition}")
-        st.table(care_plan_table)
+        st.write(care_plan_table)
 
-# Educational Resources Section
-st.subheader("Educational Resources")
-st.markdown("""
-- **Cardiovascular Health**
-  - [AHA Educational Videos](https://www.youtube.com/@AmericanHeartAssociation)
-  - [Heart Healthy Recipes](https://www.heart.org/en/healthy-living/healthy-eating/eat-smart/nutrition-basics/heart-healthy-recipes)
+elif selected_tab == "Video Library":
+    st.header("Video Library")
+    st.write("Here are some useful videos on health management:")
+    
+    # Example videos (replace with actual video links)
+    videos = [
+        {"title": "Understanding Heart Health", "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+        {"title": "Managing Diabetes Effectively", "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+        {"title": "Living with COPD", "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"},
+        {"title": "Asthma Management Tips", "url": "https://www.youtube.com/watch?v=dQw4w9WgXcQ"}
+    ]
 
-- **Diabetes Management**
-  - [ADA Diabetes Educational Videos](https://www.youtube.com/@AmericanDiabetesAssociation)
-  - [Healthy Recipes for Diabetes](https://www.diabetesfoodhub.org)
+    for video in videos:
+        st.video(video["url"], start_time=0)
+        st.markdown(f"[{video['title']}]({video['url']})")
 
-- **COPD Management**
-  - [COPD Educational Videos](https://www.youtube.com/@COPDFoundation)
-  - [Breathing Exercises for COPD](https://www.copd.com/copd-breathing-exercises/)
-
-- **Asthma Management**
-  - [Asthma Educational Videos](https://www.youtube.com/@AmericanAsthmaFoundation)
-  - [Allergy Management Tips](https://www.aafa.org/allergy-management-tips/)
-""")
+# To run the app, use the command: streamlit run app.py
