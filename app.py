@@ -190,10 +190,10 @@ def create_unified_care_plan_table(condition, risk):
                 "Target": ["FEV1", "Exacerbations"],
                 "Goal": ["> 70%", "< 2 per year"],
                 "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every visit"],
+                "Monitoring": ["Monthly", "Monthly"],
                 "Notes": [
-                    "- Avoid smoking and secondhand smoke.\n"
-                    "- Use inhalers as prescribed and track usage.\n"
+                    "- Stop smoking and avoid secondhand smoke exposure.\n"
+                    "- Practice breathing exercises regularly.\n"
                 ]
             }
         else:
