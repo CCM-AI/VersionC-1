@@ -130,105 +130,98 @@ def patient_friendly_care_plan(results):
 
 # Function to create a unified care plan table
 def create_unified_care_plan_table(condition, risk):
+    data = {
+        "Target": [],
+        "Goal": [],
+        "Time Frame": [],
+        "Monitoring": [],
+        "Notes": []
+    }
+    
     if condition == "Cardiovascular":
         if risk == "High":
-            data = {
-                "Target": ["Blood Pressure", "LDL Cholesterol", "Physical Activity"],
-                "Goal": ["< 130/80 mmHg", "< 100 mg/dL", "150 minutes/week"],
-                "Time Frame": ["6 months", "6 months", "Ongoing"],
-                "Monitoring": ["Every 3 months", "Every 3 months", "Weekly check-ins"],
-                "Notes": [
-                    "- Eat more fruits and vegetables daily.\n"
-                    "- Reduce salt and saturated fat intake.\n"
-                    "- Schedule 30-minute walks, 5 days a week.\n",
-                    "- Include healthy fats like avocado and nuts.\n"
-                    "- Choose whole grains over refined ones.\n",
-                    "- Track weekly activity using a journal or app.\n"
-                ]
-            }
+            data["Target"] = ["Blood Pressure", "LDL Cholesterol", "Physical Activity"]
+            data["Goal"] = ["< 130/80 mmHg", "< 100 mg/dL", "150 minutes/week"]
+            data["Time Frame"] = ["6 months", "6 months", "Ongoing"]
+            data["Monitoring"] = ["Every 3 months", "Every 3 months", "Weekly check-ins"]
+            data["Notes"] = [
+                "- Eat more fruits and vegetables daily.\n- Reduce salt and saturated fat intake.\n- Schedule 30-minute walks, 5 days a week.\n",
+                "- Include healthy fats like avocado and nuts.\n- Choose whole grains over refined ones.\n",
+                "- Track weekly activity using a journal or app.\n"
+            ]
         else:
-            data = {
-                "Target": ["Blood Pressure", "Physical Activity"],
-                "Goal": ["< 140/90 mmHg", "30 minutes/day"],
-                "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Annually", "Weekly check-ins"],
-                "Notes": [
-                    "- Maintain a balanced diet with whole foods.\n"
-                    "- Limit processed foods and sugar intake.\n",
-                    "- Incorporate light exercises like walking or cycling.\n"
-                ]
-            }
+            data["Target"] = ["Blood Pressure", "Physical Activity"]
+            data["Goal"] = ["< 140/90 mmHg", "30 minutes/day"]
+            data["Time Frame"] = ["Ongoing", "Ongoing"]
+            data["Monitoring"] = ["Annually", "Weekly check-ins"]
+            data["Notes"] = [
+                "- Maintain a balanced diet with whole foods.\n- Limit processed foods and sugar intake.\n",
+                "- Incorporate light exercises like walking or cycling.\n"
+            ]
 
     elif condition == "Diabetes":
         if risk == "High":
-            data = {
-                "Target": ["HbA1c", "Fasting Glucose", "Physical Activity"],
-                "Goal": ["< 7%", "< 126 mg/dL", "150 minutes/week"],
-                "Time Frame": ["3 months", "3 months", "Ongoing"],
-                "Monitoring": ["Every 3 months", "Every 3 months", "Weekly check-ins"],
-                "Notes": [
-                    "- Follow a diabetes meal plan focusing on low GI foods.\n"
-                    "- Measure blood sugar before meals.\n",
-                    "- Engage in regular moderate exercise like brisk walking.\n"
-                ]
-            }
+            data["Target"] = ["HbA1c", "Fasting Glucose", "Physical Activity"]
+            data["Goal"] = ["< 7%", "< 126 mg/dL", "150 minutes/week"]
+            data["Time Frame"] = ["3 months", "3 months", "Ongoing"]
+            data["Monitoring"] = ["Every 3 months", "Every 3 months", "Weekly check-ins"]
+            data["Notes"] = [
+                "- Follow a diabetes meal plan focusing on low GI foods.\n- Measure blood sugar before meals.\n",
+                "- Engage in regular moderate exercise like brisk walking.\n"
+            ]
         else:
-            data = {
-                "Target": ["HbA1c", "Physical Activity"],
-                "Goal": ["< 8%", "30 minutes/day"],
-                "Time Frame": ["Annual", "Ongoing"],
-                "Monitoring": ["Annually", "Weekly check-ins"],
-                "Notes": [
-                    "- Continue healthy eating habits, including whole grains.\n"
-                    "- Stay active with activities you enjoy, like dancing.\n"
-                ]
-            }
+            data["Target"] = ["HbA1c", "Physical Activity"]
+            data["Goal"] = ["< 8%", "30 minutes/day"]
+            data["Time Frame"] = ["Annual", "Ongoing"]
+            data["Monitoring"] = ["Annually", "Weekly check-ins"]
+            data["Notes"] = [
+                "- Continue to eat balanced meals.\n- Regularly check blood glucose levels at home.\n",
+                "- Stay active with daily walks or activities you enjoy.\n"
+            ]
 
     elif condition == "COPD":
         if risk == "High":
-            data = {
-                "Target": ["FEV1", "Exacerbations"],
-                "Goal": ["> 70%", "< 2 per year"],
-                "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every visit"],
-                "Notes": [
-                    "- Quit smoking and avoid secondhand smoke.\n"
-                    "- Engage in pulmonary rehabilitation exercises.\n"
-                ]
-            }
+            data["Target"] = ["FEV1", "Exacerbations", "Smoking Cessation"]
+            data["Goal"] = ["> 70%", "< 2/year", "Quit"]
+            data["Time Frame"] = ["Ongoing", "Ongoing", "Immediate"]
+            data["Monitoring"] = ["Biannual", "Monthly", "Ongoing"]
+            data["Notes"] = [
+                "- Avoid air pollutants and allergens.\n- Follow a structured rehabilitation program.\n",
+                "- Consult with a healthcare provider for smoking cessation options.\n"
+            ]
         else:
-            data = {
-                "Target": ["FEV1"],
-                "Goal": ["> 70%"],
-                "Time Frame": ["Ongoing"],
-                "Monitoring": ["Biannual"],
-                "Notes": [
-                    "- Stay active and avoid respiratory irritants.\n"
-                ]
-            }
+            data["Target"] = ["FEV1"]
+            data["Goal"] = ["> 70%"]
+            data["Time Frame"] = ["Ongoing"]
+            data["Monitoring"] = ["Biannual"]
+            data["Notes"] = [
+                "- Stay active and avoid respiratory irritants.\n"
+            ]
 
     elif condition == "Asthma":
         if risk == "High":
-            data = {
-                "Target": ["Asthma Symptoms", "Medication Adherence"],
-                "Goal": ["< 2 days/week", "100%"],
-                "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every visit"],
-                "Notes": [
-                    "- Keep your rescue inhaler accessible.\n"
-                    "- Attend regular check-ups to manage your asthma plan.\n"
-                ]
-            }
+            data["Target"] = ["Asthma Symptoms", "Medication Adherence"]
+            data["Goal"] = ["< 2 days/week", "100%"]
+            data["Time Frame"] = ["Ongoing", "Ongoing"]
+            data["Monitoring"] = ["Every 1-3 months", "Every visit"]
+            data["Notes"] = [
+                "- Keep your rescue inhaler accessible.\n- Attend regular check-ups to manage your asthma plan.\n"
+            ]
         else:
-            data = {
-                "Target": ["Asthma Symptoms"],
-                "Goal": ["< 2 uses/week"],
-                "Time Frame": ["Ongoing"],
-                "Monitoring": ["Every 3-6 months"],
-                "Notes": [
-                    "- Continue using your asthma controller medication as prescribed.\n"
-                ]
-            }
+            data["Target"] = ["Asthma Symptoms"]
+            data["Goal"] = ["< 2 uses/week"]
+            data["Time Frame"] = ["Ongoing"]
+            data["Monitoring"] = ["Every 3-6 months"]
+            data["Notes"] = [
+                "- Continue using your asthma controller medication as prescribed.\n"
+            ]
+
+    # Ensuring all lists are the same length
+    max_length = max(len(data["Target"]), len(data["Goal"]), len(data["Time Frame"]), len(data["Monitoring"]), len(data["Notes"]))
+    
+    for key in data.keys():
+        while len(data[key]) < max_length:
+            data[key].append("N/A")  # Fill missing entries with 'N/A'
 
     return pd.DataFrame(data)
 
@@ -300,4 +293,3 @@ videos = [
 
 for title, link in videos:
     st.write(f"- [{title}]({link})")
-
