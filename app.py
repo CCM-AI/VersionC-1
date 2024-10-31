@@ -330,19 +330,46 @@ with tab5:
         st.write("### Video Library")
         st.write("Here are some useful videos on health management:")        
 
-        # Updated video links
-        videos = [
-            {"title": "Keep Your Asthma Controlled", "url": "https://www.youtube.com/shorts/SqG13EtRIAo"},
-            {"title": "Check Inhalers Use Technique", "url": "https://www.youtube.com/watch?v=2dVnDkpymYk"},
-            {"title": "Risk Factors for Cardiovascular Disease", "url": "https://www.youtube.com/watch?v=SRioi_6Yh18"},
-            {"title": "Keep Your Diabetes Under Control", "url": "https://www.youtube.com/watch?feature=shared&v=qG3OyONVbEQ"},
-            {"title": "Physical Activity", "url": "https://www.youtube.com/watch?feature=shared&v=IF8IEj8Rzvg"},
-            {"title": "Diet", "url": "https://www.youtube.com/watch?v=c5Cgmwi-oRI"},
-            {"title": "Hypertension", "url": "https://www.youtube.com/watch?feature=shared&v=NG17qcXYxYQ"},
-            {"title": "Smoking", "url": "https://www.youtube.com/watch?feature=shared&v=24eovpnitPk"},
-            {"title": "High Cholesterol", "url": "https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk"},
-            {"title": "Stress", "url": "https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80"},
-            {"title": "Maintain Healthy Weight", "url": "https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ"},
+     # Unified Care Plan Tab for Videos
+        st.subheader("Unified Care Plan with Video Resources")
+        video_resources = {
+            "Cardiovascular": [
+                "https://www.youtube.com/watch?v=example1",
+                "https://www.youtube.com/watch?v=example2"
+            ],
+            "Diabetes": [
+                "https://www.youtube.com/watch?v=example3",
+                "https://www.youtube.com/watch?v=example4"
+            ],
+            "COPD": [
+                "https://www.youtube.com/watch?v=example5",
+                "https://www.youtube.com/watch?v=example6"
+            ],
+            "Asthma": [
+                "https://www.youtube.com/watch?v=example7",
+                "https://www.youtube.com/watch?v=example8"
+            ]
+        }
+# Unified Care Plan Tab for Videos
+        st.subheader("Unified Care Plan with Video Resources")
+        video_resources = {
+            "Cardiovascular": [
+                "https://www.youtube.com/watch?v=example1",
+                "https://www.youtube.com/watch?v=example2"
+            ],
+            "Diabetes": [
+                "https://www.youtube.com/watch?v=example3",
+                "https://www.youtube.com/watch?v=example4"
+            ],
+            "COPD": [
+                "https://www.youtube.com/watch?v=example5",
+                "https://www.youtube.com/watch?v=example6"
+            ],
+            "Asthma": [
+                "https://www.youtube.com/watch?v=example7",
+                "https://www.youtube.com/watch?v=example8"
+            ]
+
         ]
 
         for video in videos:
