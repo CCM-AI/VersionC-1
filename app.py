@@ -341,7 +341,6 @@ with tab5:
             - [High cholesterol](https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk)
             - [Stress](https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80)
             - [Maintain healthy weight](https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ)
-            
 
 # Footer Section
 st.write("---")
