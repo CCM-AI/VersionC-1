@@ -244,7 +244,7 @@ def create_unified_care_plan_table(condition, risk):
     return pd.DataFrame(data)
 
 # Streamlit UI Setup
-st.title("Chronic Care (CC-AI"))
+st.title("Chronic Care (CC-AI)")
 
 # Initialize session state
 if 'results' not in st.session_state:
