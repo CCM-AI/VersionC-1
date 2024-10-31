@@ -326,14 +326,27 @@ with tab5:
             care_plan_table = create_unified_care_plan_table(condition, risk)
             st.dataframe(care_plan_table)
 
-# Educational Resources Section
-st.write("---")
-st.header("Educational Resources")
-st.write("Here are some trusted resources for chronic disease management:")
-st.write("- [American Diabetes Association (ADA)](https://www.diabetes.org)")
-st.write("- [American Heart Association (AHA)](https://www.heart.org)")
-st.write("- [Global Initiative for Chronic Obstructive Lung Disease (GOLD)](https://goldcopd.org)")
-st.write("- [Asthma and Allergy Foundation of America (AAFA)](https://www.aafa.org)")
+# Educational Resources
+        st.header("Educational Resources")
+        st.markdown(
+            """
+            - [Keep your asthma-controlled](https://www.youtube.com/shorts/SqG13EtRIAo)
+            - [Check inhalers use technique](https://www.youtube.com/watch?v=2dVnDkpymYk)
+            - [Risk factors for cardiovascular disease](https://www.youtube.com/watch?v=SRioi_6Yh18)
+            - [Keep your diabetes under control](https://www.youtube.com/watch?feature=shared&v=qG3OyONVbEQ)
+            - [Physical activity](https://www.youtube.com/watch?feature=shared&v=IF8IEj8Rzvg)
+            - [Diet](https://www.youtube.com/watch?v=c5Cgmwi-oRI)
+            - [Hypertension](https://www.youtube.com/watch?feature=shared&v=NG17qcXYxYQ)
+            - [Smoking](https://www.youtube.com/watch?feature=shared&v=24eovpnitPk)
+            - [High cholesterol](https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk)
+            - [Stress](https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80)
+            - [Maintain healthy weight](https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ)
+            """
+        )
+
+if __name__ == "__main__":
+    main()
+
 
 # Footer Section
 st.write("---")
