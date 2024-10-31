@@ -327,7 +327,7 @@ with tab5:
             st.dataframe(care_plan_table)
             
         # Unified Care Plan Tab for Videos
-        st.subheader("Unified Care Plan with Video Resources")
+        st.subheader(" Care Plan Video Resources")
         video_resources = {
             "Cardiovascular": [
                 "https://www.youtube.com/watch?v=example1",
