@@ -292,4 +292,6 @@ videos = [
 ]
 
 for title, link in videos:
-    st.write(f"- [{title}]({link})")
+    st.video(link)
+    st.write(f"- {title}")
+
