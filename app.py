@@ -330,29 +330,24 @@ with tab5:
         st.write("### Video Library")
         st.write("Here are some useful videos on health management:")        
 
-    # Updated video links
-    videos = [
-        {"title": "Keep Your Asthma Controlled", "url": "https://www.youtube.com/shorts/SqG13EtRIAo"},
-        {"title": "Check Inhalers Use Technique", "url": "https://www.youtube.com/watch?v=2dVnDkpymYk"},
-        {"title": "Risk Factors for Cardiovascular Disease", "url": "https://www.youtube.com/watch?v=SRioi_6Yh18"},
-        {"title": "Keep Your Diabetes Under Control", "url": "https://www.youtube.com/watch?feature=shared&v=qG3OyONVbEQ"},
-        {"title": "Physical Activity", "url": "https://www.youtube.com/watch?feature=shared&v=IF8IEj8Rzvg"},
-        {"title": "Diet", "url": "https://www.youtube.com/watch?v=c5Cgmwi-oRI"},
-        {"title": "Hypertension", "url": "https://www.youtube.com/watch?feature=shared&v=NG17qcXYxYQ"},
-        {"title": "Smoking", "url": "https://www.youtube.com/watch?feature=shared&v=24eovpnitPk"},
-        {"title": "High Cholesterol", "url": "https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk"},
-        {"title": "Stress", "url": "https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80"},
-        {"title": "Maintain Healthy Weight", "url": "https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ"},
-    ]
+        # Updated video links
+        videos = [
+            {"title": "Keep Your Asthma Controlled", "url": "https://www.youtube.com/shorts/SqG13EtRIAo"},
+            {"title": "Check Inhalers Use Technique", "url": "https://www.youtube.com/watch?v=2dVnDkpymYk"},
+            {"title": "Risk Factors for Cardiovascular Disease", "url": "https://www.youtube.com/watch?v=SRioi_6Yh18"},
+            {"title": "Keep Your Diabetes Under Control", "url": "https://www.youtube.com/watch?feature=shared&v=qG3OyONVbEQ"},
+            {"title": "Physical Activity", "url": "https://www.youtube.com/watch?feature=shared&v=IF8IEj8Rzvg"},
+            {"title": "Diet", "url": "https://www.youtube.com/watch?v=c5Cgmwi-oRI"},
+            {"title": "Hypertension", "url": "https://www.youtube.com/watch?feature=shared&v=NG17qcXYxYQ"},
+            {"title": "Smoking", "url": "https://www.youtube.com/watch?feature=shared&v=24eovpnitPk"},
+            {"title": "High Cholesterol", "url": "https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk"},
+            {"title": "Stress", "url": "https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80"},
+            {"title": "Maintain Healthy Weight", "url": "https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ"},
+        ]
 
-    for video in videos:
-        st.video(video["url"], start_time=0)  # Embed the video
-        st.markdown(f"[{video['title']}]({video['url']})")  # Link to the video
-
-# Call the function to display the video library
-if Video Library == "__main__":
-    video_library()
-
+        for video in videos:
+            st.video(video["url"], start_time=0)  # Embed the video
+            st.markdown(f"[{video['title']}]({video['url']})")  # Link to the video
 
 # Footer Section
 st.write("---")
