@@ -351,29 +351,30 @@ with tab5:
             ]
         }
 # Unified Care Plan Tab for Videos
-        st.subheader("Unified Care Plan with Video Resources")
-        video_resources = {
-            "Cardiovascular": [
-                "https://www.youtube.com/watch?v=example1",
-                "https://www.youtube.com/watch?v=example2"
-            ],
-            "Diabetes": [
-                "https://www.youtube.com/watch?v=example3",
-                "https://www.youtube.com/watch?v=example4"
-            ],
-            "COPD": [
-                "https://www.youtube.com/watch?v=example5",
-                "https://www.youtube.com/watch?v=example6"
-            ],
-            "Asthma": [
-                "https://www.youtube.com/watch?v=example7",
-                "https://www.youtube.com/watch?v=example8"
-            ]
+st.subheader("Unified Care Plan with Video Resources")
+video_resources = {
+    "Cardiovascular": [
+        "https://www.youtube.com/watch?v=example1",
+        "https://www.youtube.com/watch?v=example2"
+    ],
+    "Diabetes": [
+        "https://www.youtube.com/watch?v=example3",
+        "https://www.youtube.com/watch?v=example4"
+    ],
+    "COPD": [
+        "https://www.youtube.com/watch?v=example5",
+        "https://www.youtube.com/watch?v=example6"
+    ],
+    "Asthma": [
+        "https://www.youtube.com/watch?v=example7",
+        "https://www.youtube.com/watch?v=example8"
+    ]
+}
 
-
-        for video in videos:
-            st.video(video["url"], start_time=0)  # Embed the video
-            st.markdown(f"[{video['title']}]({video['url']})")  # Link to the video
+# Display the videos for each condition
+for condition, videos in video_resources.items():
+    st.subheader(f"{condition} Videos")
+    for
 
 # Footer Section
 st.write("---")
