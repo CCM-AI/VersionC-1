@@ -370,7 +370,6 @@ with tab5:
                 "https://www.youtube.com/watch?v=example8"
             ]
 
-        ]
 
         for video in videos:
             st.video(video["url"], start_time=0)  # Embed the video
