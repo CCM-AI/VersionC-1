@@ -190,10 +190,11 @@ def create_unified_care_plan_table(condition, risk):
                 "Target": ["FEV1", "Exacerbations"],
                 "Goal": ["> 70%", "< 2 per year"],
                 "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every 1-3 months"],
+                "Monitoring": ["Every 1-3 months", "Every visit"],
                 "Notes": [
-                    "- Join a pulmonary rehabilitation program.\n"
-                    "- Follow a prescribed medication regimen.\n"
+                    "- Avoid smoking and secondhand smoke.\n"
+                    "- Use medications as prescribed, including inhalers.\n",
+                    "- Consider joining a pulmonary rehabilitation program.\n"
                 ]
             }
         else:
@@ -201,125 +202,143 @@ def create_unified_care_plan_table(condition, risk):
                 "Target": ["FEV1"],
                 "Goal": ["> 70%"],
                 "Time Frame": ["Ongoing"],
-                "Monitoring": ["Biannually"],
+                "Monitoring": ["Every 6 months"],
                 "Notes": [
-                    "- Maintain an active lifestyle as tolerated.\n"
-                    "- Avoid respiratory irritants.\n"
+                    "- Maintain a smoke-free environment.\n"
+                    "- Engage in light exercises to strengthen lungs.\n"
                 ]
             }
 
     elif condition == "Asthma":
         if risk == "High":
             data = {
-                "Target": ["Symptom Frequency", "PEF"],
-                "Goal": ["< 2 times/week", "> 80% predicted"],
+                "Target": ["Symptom Control", "Medication Adherence"],
+                "Goal": ["< 2 uses/week", "100%"],
                 "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Monthly", "Monthly"],
+                "Monitoring": ["Every 1-3 months", "Each visit"],
                 "Notes": [
-                    "- Ensure proper inhaler technique.\n"
-                    "- Create an asthma action plan with your healthcare provider.\n"
+                    "- Follow your asthma action plan closely.\n"
+                    "- Identify and avoid known triggers.\n",
+                    "- Carry your rescue inhaler at all times.\n"
                 ]
             }
         else:
             data = {
-                "Target": ["Symptom Frequency"],
-                "Goal": ["< 1 time/week"],
+                "Target": ["Symptom Control"],
+                "Goal": ["< 2 uses/week"],
                 "Time Frame": ["Ongoing"],
-                "Monitoring": ["Monthly"],
+                "Monitoring": ["Every 3-6 months"],
                 "Notes": [
-                    "- Continue to monitor symptoms and medication use.\n"
-                    "- Follow up as needed with your doctor.\n"
+                    "- Continue using daily controller medications as directed.\n"
+                    "- Avoid triggers like dust and pollen.\n"
                 ]
             }
 
-    df = pd.DataFrame(data)
-    return df
+    # Ensure all lists are of the same length
+    max_length = max(len(data["Target"]), len(data["Goal"]), len(data["Time Frame"]), len(data["Monitoring"]), len(data["Notes"]))
+    
+    for key in data.keys():
+        while len(data[key]) < max_length:
+            data[key].append("")
 
-# Function to get numeric input with error handling
-def get_numeric_input(label, min_value, max_value, value, key):
-    try:
-        return st.number_input(label, min_value=min_value, max_value=max_value, value=value, key=key)
-    except ValueError as e:
-        st.error(f"Invalid input for {label}: {e}")
-        return None
+    return pd.DataFrame(data)
 
-# User Inputs
-st.title("Chronic Disease Risk Assessment")
-st.write("Assess your risk for chronic diseases.")
+# Streamlit UI Setup
+st.title("Chronic Disease Risk Assessment Tool")
 
-# Cardiovascular Risk Inputs
-st.subheader("Cardiovascular Risk Assessment")
-age = get_numeric_input("Age (years)", 18, 120, 50, key="cv_age")
-systolic_bp = get_numeric_input("Systolic Blood Pressure (mmHg)", 80, 300, 120, key="cv_sbp")
-smoker = st.selectbox("Are you a smoker?", ("No", "Yes"), key="cv_smoker") == "Yes"
-cholesterol = get_numeric_input("Cholesterol (mg/dL)", 100, 400, 200, key="cv_chol")
+# Initialize session state
+if 'results' not in st.session_state:
+    st.session_state['results'] = {}
 
-# Calculate and display cardiovascular risk
-if age and systolic_bp and cholesterol:
-    cardio_risk = calculate_cardio_risk(age, systolic_bp, smoker, cholesterol)
-    st.write(f"Your cardiovascular risk is: **{cardio_risk}**")
+# Tabs for different conditions
+tab1, tab2, tab3, tab4, tab5 = st.tabs(["Cardiovascular Risk", "Diabetes Risk", "COPD Risk", "Asthma Risk", "Unified Care Plan"])
 
-# Diabetes Risk Inputs
-st.subheader("Diabetes Risk Assessment")
-bmi = get_numeric_input("BMI (kg/m²)", 10, 50, 25, key="diabetes_bmi")
-family_history = st.selectbox("Family history of diabetes?", ("No", "Yes"), key="diabetes_family_history") == "Yes"
-fasting_glucose = get_numeric_input("Fasting Glucose (mg/dL)", 50, 300, 100, key="diabetes_fasting_glucose")
-hba1c = get_numeric_input("HbA1c (%)", 4.0, 14.0, 5.0, key="diabetes_hba1c")
+# Cardiovascular Risk Tab
+with tab1:
+    st.header("Cardiovascular Risk Assessment")
+    age = st.number_input("Age", min_value=18, max_value=120, value=50, key="cv_age")
+    systolic_bp = st.number_input("Systolic Blood Pressure (mmHg)", min_value=80, max_value=200, value=120, key="systolic_bp")
+    cholesterol = st.number_input("Cholesterol (mg/dL)", min_value=150, max_value=300, value=200, key="cholesterol")
+    smoker = st.checkbox("Smoker", key="smoker")
 
-# Calculate and display diabetes risk
-if bmi and fasting_glucose and hba1c:
-    diabetes_risk = calculate_diabetes_risk(bmi, age, family_history, fasting_glucose, hba1c)
-    st.write(f"Your diabetes risk is: **{diabetes_risk}**")
+    if st.button("Calculate Cardiovascular Risk"):
+        cardio_risk = calculate_cardio_risk(age, systolic_bp, smoker, cholesterol)
+        st.write(f"**Cardiovascular Risk Level**: {cardio_risk}")
+        st.session_state['results']["Cardiovascular"] = cardio_risk
+        st.write(ai_assistant_response("Cardiovascular", cardio_risk))
 
-# COPD Risk Inputs
-st.subheader("COPD Risk Assessment")
-smoking_years = get_numeric_input("Years of Smoking", 0, 100, 20, key="copd_smoking_years")
-age_copd = get_numeric_input("Age (years)", 18, 120, 50, key="copd_age")
-fev1 = get_numeric_input("FEV1 (L)", 0.1, 8.0, 3.0, key="copd_fev1")
-exacerbations_last_year = get_numeric_input("Exacerbations Last Year", 0, 100, 1, key="copd_exacerbations")
+# Diabetes Risk Tab
+with tab2:
+    st.header("Diabetes Risk Assessment")
+    bmi = st.number_input("BMI", min_value=10.0, max_value=50.0, value=25.0, key="bmi")
+    age = st.number_input("Age", min_value=18, max_value=120, value=50, key="diabetes_age")
+    family_history = st.checkbox("Family History of Diabetes", key="family_history")
+    fasting_glucose = st.number_input("Fasting Glucose (mg/dL)", min_value=50, max_value=300, value=100, key="fasting_glucose")
+    hba1c = st.number_input("HbA1c (%)", min_value=4.0, max_value=15.0, value=5.5, key="hba1c")
 
-# Calculate and display COPD risk
-if smoking_years and age_copd and fev1 and exacerbations_last_year:
-    copd_risk = calculate_copd_risk(smoking_years, age_copd, fev1, exacerbations_last_year)
-    st.write(f"Your COPD risk is: **{copd_risk}**")
+    if st.button("Calculate Diabetes Risk"):
+        diabetes_risk = calculate_diabetes_risk(bmi, age, family_history, fasting_glucose, hba1c)
+        st.write(f"**Diabetes Risk Level**: {diabetes_risk}")
+        st.session_state['results']["Diabetes"] = diabetes_risk
+        st.write(ai_assistant_response("Diabetes", diabetes_risk))
 
-# Asthma Risk Inputs
-st.subheader("Asthma Risk Assessment")
-frequency_of_symptoms = get_numeric_input("Frequency of Symptoms (times/week)", 0, 20, 2, key="asthma_symptoms")
-nighttime_symptoms = get_numeric_input("Nighttime Symptoms (times/month)", 0, 30, 1, key="asthma_nighttime")
-inhaler_use = get_numeric_input("Inhaler Use (times/month)", 0, 50, 5, key="asthma_inhaler_use")
-eosinophil_count = get_numeric_input("Eosinophil Count (cells/µL)", 0, 1000, 300, key="asthma_eosinophil")
+# COPD Risk Tab
+with tab3:
+    st.header("COPD Risk Assessment")
+    smoking_years = st.number_input("Years of Smoking", min_value=0, max_value=50, value=10, key="smoking_years")
+    age = st.number_input("Age", min_value=18, max_value=120, value=50, key="copd_age")
+    fev1 = st.number_input("FEV1 (%)", min_value=20, max_value=100, value=80, key="fev1")
+    exacerbations_last_year = st.number_input("Exacerbations in Last Year", min_value=0, max_value=10, value=1, key="exacerbations")
 
-# Calculate and display asthma risk
-if frequency_of_symptoms and nighttime_symptoms and inhaler_use and eosinophil_count:
-    asthma_risk = calculate_asthma_risk(frequency_of_symptoms, nighttime_symptoms, inhaler_use, fev1, eosinophil_count)
-    st.write(f"Your asthma risk is: **{asthma_risk}**")
+    if st.button("Calculate COPD Risk"):
+        copd_risk = calculate_copd_risk(smoking_years, age, fev1, exacerbations_last_year)
+        st.write(f"**COPD Risk Level**: {copd_risk}")
+        st.session_state['results']["COPD"] = copd_risk
+        st.write(ai_assistant_response("COPD", copd_risk))
 
-# Collecting all results
-results = {
-    "Cardiovascular": cardio_risk if 'cardio_risk' in locals() else None,
-    "Diabetes": diabetes_risk if 'diabetes_risk' in locals() else None,
-    "COPD": copd_risk if 'copd_risk' in locals() else None,
-    "Asthma": asthma_risk if 'asthma_risk' in locals() else None
-}
+# Asthma Risk Tab
+with tab4:
+    st.header("Asthma Risk Assessment")
+    frequency_of_symptoms = st.slider("Frequency of Symptoms (0-7 days/week)", 0, 7, 2, key="frequency_of_symptoms")
+    nighttime_symptoms = st.slider("Nighttime Symptoms (0-7 days/week)", 0, 7, 1, key="nighttime_symptoms")
+    inhaler_use = st.slider("Inhaler Use (0-7 days/week)", 0, 7, 2, key="inhaler_use")
+    fev1_asthma = st.number_input("FEV1 (%) - Asthma", min_value=20, max_value=100, value=80, key="fev1_asthma")
+    eosinophil_count = st.number_input("Eosinophil Count (cells/μL)", min_value=0, max_value=1000, value=300, key="eosinophil_count")
 
-# Display AI Assistant Response
-st.subheader("AI Assistant Recommendations")
-for condition, risk in results.items():
-    if risk:
-        response = ai_assistant_response(condition, risk)
-        st.markdown(response)
+    if st.button("Calculate Asthma Risk"):
+        asthma_risk = calculate_asthma_risk(frequency_of_symptoms, nighttime_symptoms, inhaler_use, fev1_asthma, eosinophil_count)
+        st.write(f"**Asthma Risk Level**: {asthma_risk}")
+        st.session_state['results']["Asthma"] = asthma_risk
+        st.write(ai_assistant_response("Asthma", asthma_risk))
 
-# Display Patient-Friendly Care Plan
-st.subheader("Patient-Friendly Care Plans")
-care_plan = patient_friendly_care_plan(results)
-st.markdown(care_plan)
+# Unified Care Plan Tab
+with tab5:
+    st.header("Unified Care Plan")
+    if st.session_state['results']:
+        st.write("### Suggested Patient-Friendly Care Plan")
+        patient_care_plan = patient_friendly_care_plan(st.session_state['results'])
+        st.write(patient_care_plan)
 
-# Create a Unified Care Plan Table
-st.subheader("Unified Care Plan")
-for condition, risk in results.items():
-    if risk:
-        care_plan_df = create_unified_care_plan_table(condition, risk)
-        st.write(f"**{condition} - Risk Level: {risk}**")
-        st.dataframe(care_plan_df)
+        # Create a comprehensive table for the unified care plan
+        st.write("### Care Plan Targets Table")
+        for condition, risk in st.session_state['results'].items():
+            st.write(f"#### Care Plan for {condition} - Risk Level: {risk}")
+            care_plan_table = create_unified_care_plan_table(condition, risk)
+            st.dataframe(care_plan_table)
 
+# Educational Resources Section
+st.write("---")
+st.header("Educational Resources")
+st.write("Here are some trusted resources for chronic disease management:")
+st.write("- [American Diabetes Association (ADA)](https://www.diabetes.org)")
+st.write("- [American Heart Association (AHA)](https://www.heart.org)")
+st.write("- [Global Initiative for Chronic Obstructive Lung Disease (GOLD)](https://goldcopd.org)")
+st.write("- [Asthma and Allergy Foundation of America (AAFA)](https://www.aafa.org)")
+
+# Footer Section
+st.write("---")
+st.header("Feedback and Support")
+st.write("We value your feedback! Please let us know how we can improve this application or if you need further assistance.")
+feedback = st.text_area("Your Feedback:", height=100)
+if st.button("Submit Feedback"):
+    st.success("Thank you for your feedback!")
