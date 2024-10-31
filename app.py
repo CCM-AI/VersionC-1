@@ -320,7 +320,7 @@ with tab5:
         st.write(patient_care_plan)
 
         # Create a comprehensive table for the unified care plan
-        st.write("### Care Plan Targets Table")
+        st.write("### Care Plan Table")
         for condition, risk in st.session_state['results'].items():
             st.write(f"#### Care Plan for {condition} - Risk Level: {risk}")
             care_plan_table = create_unified_care_plan_table(condition, risk)
