@@ -342,11 +342,7 @@ with tab5:
             - [Stress](https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80)
             - [Maintain healthy weight](https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ)
             """
-        )
-
-if __name__ == "__main__":
-    main()
-
+        
 
 # Footer Section
 st.write("---")
