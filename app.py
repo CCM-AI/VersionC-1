@@ -326,14 +326,36 @@ with tab5:
             care_plan_table = create_unified_care_plan_table(condition, risk)
             st.dataframe(care_plan_table)
 
-# Educational Resources Section
-st.write("---")
-st.header("Educational Resources")
-st.write("Here are some trusted resources for chronic disease management:")
-st.write("- [American Diabetes Association (ADA)](https://www.diabetes.org)")
-st.write("- [American Heart Association (AHA)](https://www.heart.org)")
-st.write("- [Global Initiative for Chronic Obstructive Lung Disease (GOLD)](https://goldcopd.org)")
-st.write("- [Asthma and Allergy Foundation of America (AAFA)](https://www.aafa.org)")
+import streamlit as st
+
+# Function to display the video library
+def video_library():
+    st.header("Video Library")
+    st.write("Here are some useful videos on health management:")
+
+    # Updated video links
+    videos = [
+        {"title": "Keep Your Asthma Controlled", "url": "https://www.youtube.com/shorts/SqG13EtRIAo"},
+        {"title": "Check Inhalers Use Technique", "url": "https://www.youtube.com/watch?v=2dVnDkpymYk"},
+        {"title": "Risk Factors for Cardiovascular Disease", "url": "https://www.youtube.com/watch?v=SRioi_6Yh18"},
+        {"title": "Keep Your Diabetes Under Control", "url": "https://www.youtube.com/watch?feature=shared&v=qG3OyONVbEQ"},
+        {"title": "Physical Activity", "url": "https://www.youtube.com/watch?feature=shared&v=IF8IEj8Rzvg"},
+        {"title": "Diet", "url": "https://www.youtube.com/watch?v=c5Cgmwi-oRI"},
+        {"title": "Hypertension", "url": "https://www.youtube.com/watch?feature=shared&v=NG17qcXYxYQ"},
+        {"title": "Smoking", "url": "https://www.youtube.com/watch?feature=shared&v=24eovpnitPk"},
+        {"title": "High Cholesterol", "url": "https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk"},
+        {"title": "Stress", "url": "https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80"},
+        {"title": "Maintain Healthy Weight", "url": "https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ"},
+    ]
+
+    for video in videos:
+        st.video(video["url"], start_time=0)  # Embed the video
+        st.markdown(f"[{video['title']}]({video['url']})")  # Link to the video
+
+# Call the function to display the video library
+if __name__ == "__main__":
+    video_library()
+
 
 # Footer Section
 st.write("---")
