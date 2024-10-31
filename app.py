@@ -192,120 +192,126 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["Ongoing", "Ongoing"],
                 "Monitoring": ["Every 1-3 months", "Every visit"],
                 "Notes": [
-                    "- Join a pulmonary rehabilitation program.\n"
-                    "- Avoid secondhand smoke and pollutants.\n"
+                    "- Avoid smoking and secondhand smoke.\n"
+                    "- Use inhalers as prescribed and track usage.\n"
                 ]
             }
         else:
             data = {
                 "Target": ["FEV1"],
-                "Goal": ["> 70%"],
+                "Goal": ["> 60%"],
                 "Time Frame": ["Ongoing"],
-                "Monitoring": ["Biannual"],
+                "Monitoring": ["Biannually"],
                 "Notes": [
-                    "- Encourage smoking cessation if applicable.\n"
-                    "- Continue to monitor respiratory symptoms.\n"
+                    "- Continue avoiding triggers that worsen symptoms.\n"
+                    "- Perform breathing exercises regularly.\n"
                 ]
             }
 
     elif condition == "Asthma":
         if risk == "High":
             data = {
-                "Target": ["Symptoms", "Inhaler Use"],
-                "Goal": ["< 2 days/week", "As prescribed"],
+                "Target": ["Symptom Control", "Inhaler Technique"],
+                "Goal": ["< 2 days/week", "100% adherence"],
                 "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every visit"],
+                "Monitoring": ["Every 1-3 months", "At each visit"],
                 "Notes": [
-                    "- Regularly review inhaler technique.\n"
-                    "- Keep a symptom diary for tracking.\n"
+                    "- Review and practice inhaler technique regularly.\n"
+                    "- Avoid known allergens and triggers.\n"
                 ]
             }
         else:
             data = {
-                "Target": ["Symptoms"],
-                "Goal": ["< 2 days/month"],
+                "Target": ["Symptom Control"],
+                "Goal": ["< 2 uses/week"],
                 "Time Frame": ["Ongoing"],
                 "Monitoring": ["Every 3-6 months"],
                 "Notes": [
-                    "- Continue to avoid known triggers.\n"
-                    "- Encourage physical activity within limits.\n"
+                    "- Ensure you have an asthma action plan.\n"
+                    "- Engage in regular physical activity with precautions.\n"
                 ]
             }
 
-    df = pd.DataFrame(data)
-    return df
+    return pd.DataFrame(data)
 
-# Main Application
-st.title("Chronic Disease Risk Assessment")
+# Streamlit Application Layout
+st.title("Chronic Disease Risk Assessment and Care Plan")
 
-# User Inputs
-st.header("Risk Assessment")
-st.subheader("Enter your health details:")
-age = st.number_input("Age", min_value=1, max_value=120)
-systolic_bp = st.number_input("Systolic Blood Pressure (mmHg)", min_value=50, max_value=250)
-smoker = st.radio("Do you smoke?", ("Yes", "No")) == "Yes"
-cholesterol = st.number_input("Cholesterol Level (mg/dL)", min_value=100, max_value=400)
-bmi = st.number_input("BMI", min_value=10.0, max_value=60.0)
-family_history = st.radio("Family History of Diabetes?", ("Yes", "No")) == "Yes"
-fasting_glucose = st.number_input("Fasting Glucose (mg/dL)", min_value=60, max_value=400)
-hba1c = st.number_input("HbA1c (%)", min_value=4.0, max_value=15.0)
-smoking_years = st.number_input("Years of Smoking", min_value=0, max_value=100)
-fev1 = st.number_input("FEV1 (%)", min_value=0.0, max_value=100.0)
-exacerbations_last_year = st.number_input("Number of Exacerbations Last Year", min_value=0, max_value=20)
-frequency_of_symptoms = st.number_input("Days with Symptoms/Month", min_value=0, max_value=30)
-nighttime_symptoms = st.number_input("Nighttime Symptoms/Month", min_value=0, max_value=30)
-inhaler_use = st.radio("Inhaler Usage", ("Regularly", "Irregularly", "Never"))
-eosinophil_count = st.number_input("Eosinophil Count (cells/µL)", min_value=0, max_value=1000)
+# Risk Assessment Inputs
+st.sidebar.header("Input Patient Information")
 
-# Risk Assessment Logic
-if st.button("Assess Risk"):
-    cardio_risk = calculate_cardio_risk(age, systolic_bp, smoker, cholesterol)
-    diabetes_risk = calculate_diabetes_risk(bmi, age, family_history, fasting_glucose, hba1c)
+age = st.sidebar.number_input("Age", min_value=1, max_value=120)
+systolic_bp = st.sidebar.number_input("Systolic Blood Pressure (mmHg)", min_value=80, max_value=250)
+smoker = st.sidebar.selectbox("Smoker?", ("Yes", "No"))
+cholesterol = st.sidebar.number_input("Cholesterol Level (mg/dL)", min_value=100, max_value=400)
+
+bmi = st.sidebar.number_input("BMI", min_value=10, max_value=60)
+family_history = st.sidebar.selectbox("Family History of Diabetes?", ("Yes", "No"))
+fasting_glucose = st.sidebar.number_input("Fasting Glucose (mg/dL)", min_value=60, max_value=300)
+hba1c = st.sidebar.number_input("HbA1c (%)", min_value=4, max_value=15)
+
+smoking_years = st.sidebar.number_input("Years of Smoking", min_value=0, max_value=100)
+fev1 = st.sidebar.number_input("FEV1 (%)", min_value=0, max_value=100)
+exacerbations_last_year = st.sidebar.number_input("Exacerbations Last Year", min_value=0, max_value=20)
+
+frequency_of_symptoms = st.sidebar.number_input("Asthma Symptoms Frequency (per week)", min_value=0, max_value=20)
+nighttime_symptoms = st.sidebar.number_input("Nighttime Symptoms (per month)", min_value=0, max_value=20)
+inhaler_use = st.sidebar.number_input("Inhaler Use (per week)", min_value=0, max_value=20)
+eosinophil_count = st.sidebar.number_input("Eosinophil Count", min_value=0, max_value=100)
+
+if st.sidebar.button("Assess Risk"):
+    # Calculate risks
+    cardio_risk = calculate_cardio_risk(age, systolic_bp, smoker == "Yes", cholesterol)
+    diabetes_risk = calculate_diabetes_risk(bmi, age, family_history == "Yes", fasting_glucose, hba1c)
     copd_risk = calculate_copd_risk(smoking_years, age, fev1, exacerbations_last_year)
     asthma_risk = calculate_asthma_risk(frequency_of_symptoms, nighttime_symptoms, inhaler_use, fev1, eosinophil_count)
 
-    # Display Risks
-    st.header("Risk Assessment Results")
-    st.write(f"**Cardiovascular Risk**: {cardio_risk}")
-    st.write(f"**Diabetes Risk**: {diabetes_risk}")
-    st.write(f"**COPD Risk**: {copd_risk}")
-    st.write(f"**Asthma Risk**: {asthma_risk}")
-
-    results = {
+    risks = {
         "Cardiovascular": cardio_risk,
         "Diabetes": diabetes_risk,
         "COPD": copd_risk,
         "Asthma": asthma_risk
     }
 
-    # AI Assistant Response
+    # Display results
+    st.subheader("Risk Assessment Results")
+    for condition, risk in risks.items():
+        st.write(f"{condition}: {risk}")
+
+    # AI Assistant Care Recommendations
+    st.subheader("AI Assistant Recommendations")
     response = ai_assistant_response("Cardiovascular", cardio_risk)
+    response += "\n\n" + ai_assistant_response("Diabetes", diabetes_risk)
+    response += "\n\n" + ai_assistant_response("COPD", copd_risk)
+    response += "\n\n" + ai_assistant_response("Asthma", asthma_risk)
     st.markdown(response)
 
-    # Patient-Friendly Care Plan
-    care_plan = patient_friendly_care_plan(results)
-    st.markdown("### Patient-Friendly Care Plan")
+    # Unified Care Plan
+    st.subheader("Unified Care Plan")
+    care_plan = patient_friendly_care_plan(risks)
     st.markdown(care_plan)
 
-    # Unified Care Plan
-    st.header("Unified Care Plan")
-    for condition, risk in results.items():
-        st.subheader(condition)
-        df = create_unified_care_plan_table(condition, risk)
-        st.dataframe(df)
+    # Unified Care Plan Table
+    st.subheader("Unified Care Plan Table")
+    for condition, risk in risks.items():
+        st.write(f"**{condition} - Risk Level: {risk}**")
+        care_plan_df = create_unified_care_plan_table(condition, risk)
+        st.dataframe(care_plan_df)
 
-# Educational Resources Section
-st.header("Educational Resources")
-st.markdown("""
-- [Keep your asthma controlled](https://www.youtube.com/shorts/SqG13EtRIAo)
-- [Check inhalers use technique](https://www.youtube.com/watch?v=2dVnDkpymYk)
-- [Risk factors for cardiovascular disease](https://www.youtube.com/watch?v=SRioi_6Yh18)
-- [Keep your diabetes under control](https://www.youtube.com/watch?feature=shared&v=qG3OyONVbEQ)
-- [Physical activity](https://www.youtube.com/watch?feature=shared&v=IF8IEj8Rzvg)
-- [Diet](https://www.youtube.com/watch?v=c5Cgmwi-oRI)
-- [Hypertension](https://www.youtube.com/watch?feature=shared&v=NG17qcXYxYQ)
-- [Smoking](https://www.youtube.com/watch?feature=shared&v=24eovpnitPk)
-- [High cholesterol](https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk)
-- [Stress](https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80)
-- [Maintain healthy weight](https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ)
-""")
+    # Resources for Unified Care Plan
+    st.subheader("Patient Education Resources")
+    st.markdown(
+        """
+        - [Keep your asthma-controlled](https://www.youtube.com/shorts/SqG13EtRIAo)  
+        - [Check inhalers use technique](https://www.youtube.com/watch?v=2dVnDkpymYk)  
+        - [Risk factors for cardiovascular disease](https://www.youtube.com/watch?v=SRioi_6Yh18)  
+        - [Keep your diabetes under control](https://www.youtube.com/watch?feature=shared&v=qG3OyONVbEQ)  
+        - [Physical activity](https://www.youtube.com/watch?feature=shared&v=IF8IEj8Rzvg)  
+        - [Diet](https://www.youtube.com/watch?v=c5Cgmwi-oRI)  
+        - [Hypertension](https://www.youtube.com/watch?feature=shared&v=NG17qcXYxYQ)  
+        - [Smoking](https://www.youtube.com/watch?feature=shared&v=24eovpnitPk)  
+        - [High cholesterol](https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk)  
+        - [Stress](https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80)  
+        - [Maintain healthy weight](https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ)  
+        """
+    )
