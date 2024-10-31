@@ -350,7 +350,7 @@ with tab5:
         st.markdown(f"[{video['title']}]({video['url']})")  # Link to the video
 
 # Call the function to display the video library
-if __name__ == "__main__":
+if Video Library == "__main__":
     video_library()
 
 
