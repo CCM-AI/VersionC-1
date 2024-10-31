@@ -188,9 +188,9 @@ def create_unified_care_plan_table(condition, risk):
         if risk == "High":
             data = {
                 "Target": ["FEV1", "Exacerbations"],
-                "Goal": ["> 70%", "< 2 per year"],
-                "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every 3 months"],
+                "Goal": ["> 80%", "< 2/year"],
+                "Time Frame": ["6 months", "Ongoing"],
+                "Monitoring": ["Monthly", "Every 3 months"],
                 "Notes": [
                     "- Stop smoking and avoid triggers.\n"
                     "- Participate in pulmonary rehabilitation.\n"
@@ -247,7 +247,7 @@ def main():
     st.title("Chronic Disease Risk Assessment Tool")
 
     # Create tabs for each functionality
-    tab1, tab2, tab3, tab4 = st.tabs(["Cardiovascular Risk", "Diabetes Risk", "COPD Risk", "Asthma Risk", "Unified Care Plan"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Cardiovascular Risk", "Diabetes Risk", "COPD Risk", "Asthma Risk", "Unified Care Plan"])
 
     # Cardiovascular Risk Assessment
     with tab1:
@@ -301,15 +301,15 @@ def main():
             st.write(ai_assistant_response("Asthma", asthma_risk))
 
     # Unified Care Plan Tab
-    with tab4:
+    with tab5:
         st.header("Unified Care Plan")
         
         # Collecting results for care plan
         results = {
-            "Cardiovascular": cardio_risk,
-            "Diabetes": diabetes_risk,
-            "COPD": copd_risk,
-            "Asthma": asthma_risk
+            "Cardiovascular": cardio_risk if 'cardio_risk' in locals() else "Not calculated",
+            "Diabetes": diabetes_risk if 'diabetes_risk' in locals() else "Not calculated",
+            "COPD": copd_risk if 'copd_risk' in locals() else "Not calculated",
+            "Asthma": asthma_risk if 'asthma_risk' in locals() else "Not calculated"
         }
 
         care_plan = patient_friendly_care_plan(results)
