@@ -114,7 +114,6 @@ def ai_assistant_response(condition, risk):
     return "\n\n".join(responses)
 
 # Rest of the code is the same, with `ai_assistant_response` invoked in each condition section to display risk management steps.
-# In the "Educational Resources" section at the bottom, you can add the educational resources as shown in `ai_assistant_response`.
 
 # Educational Resources Section
 st.write("---")
@@ -138,8 +137,11 @@ st.write("- [High Cholesterol](https://www.youtube.com/watch?feature=shared&v=G3
 st.write("- [Stress Management](https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80)")
 st.write("- [Maintain Healthy Weight](https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ)")
 
-# Footer Section
+# Feedback Section
 st.write("---")
 st.header("Feedback and Support")
 st.write("We value your feedback! Please let us know how we can improve this application or if you need further assistance.")
-feedback =
+feedback = st.text_area("Your feedback here")
+
+if st.button("Submit Feedback"):
+    st.write("Thank you for your feedback!")
