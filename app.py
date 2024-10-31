@@ -128,6 +128,121 @@ def patient_friendly_care_plan(results):
 
     return "\n\n".join(care_plan)
 
+# Function to create a unified care plan table
+def create_unified_care_plan_table(condition, risk):
+    if condition == "Cardiovascular":
+        if risk == "High":
+            data = {
+                "Target": ["Blood Pressure", "LDL Cholesterol", "Physical Activity"],
+                "Goal": ["< 130/80 mmHg", "< 100 mg/dL", "150 minutes/week"],
+                "Time Frame": ["6 months", "6 months", "Ongoing"],
+                "Monitoring": ["Every 3 months", "Every 3 months", "Weekly check-ins"],
+                "Notes": [
+                    "- Eat more fruits and vegetables daily.\n"
+                    "- Reduce salt and saturated fat intake.\n"
+                    "- Schedule 30-minute walks, 5 days a week.\n",
+                    "- Include healthy fats like avocado and nuts.\n"
+                    "- Choose whole grains over refined ones.\n",
+                    "- Track weekly activity using a journal or app.\n"
+                ]
+            }
+        else:
+            data = {
+                "Target": ["Blood Pressure", "Physical Activity"],
+                "Goal": ["< 140/90 mmHg", "30 minutes/day"],
+                "Time Frame": ["Ongoing", "Ongoing"],
+                "Monitoring": ["Annually", "Weekly check-ins"],
+                "Notes": [
+                    "- Maintain a balanced diet with whole foods.\n"
+                    "- Limit processed foods and sugar intake.\n",
+                    "- Incorporate light exercises like walking or cycling.\n"
+                ]
+            }
+
+    elif condition == "Diabetes":
+        if risk == "High":
+            data = {
+                "Target": ["HbA1c", "Fasting Glucose", "Physical Activity"],
+                "Goal": ["< 7%", "< 126 mg/dL", "150 minutes/week"],
+                "Time Frame": ["3 months", "3 months", "Ongoing"],
+                "Monitoring": ["Every 3 months", "Every 3 months", "Weekly check-ins"],
+                "Notes": [
+                    "- Follow a diabetes meal plan focusing on low GI foods.\n"
+                    "- Measure blood sugar before meals.\n",
+                    "- Engage in regular moderate exercise like brisk walking.\n"
+                ]
+            }
+        else:
+            data = {
+                "Target": ["HbA1c", "Physical Activity"],
+                "Goal": ["< 8%", "30 minutes/day"],
+                "Time Frame": ["Annual", "Ongoing"],
+                "Monitoring": ["Annually", "Weekly check-ins"],
+                "Notes": [
+                    "- Continue healthy eating habits, including whole grains.\n"
+                    "- Stay active with activities you enjoy, like dancing.\n"
+                ]
+            }
+
+    elif condition == "COPD":
+        if risk == "High":
+            data = {
+                "Target": ["FEV1", "Exacerbations"],
+                "Goal": ["> 70%", "< 2 per year"],
+                "Time Frame": ["Ongoing", "Ongoing"],
+                "Monitoring": ["Every 1-3 months", "Every visit"],
+                "Notes": [
+                    "- Avoid smoking and secondhand smoke.\n"
+                    "- Use medications as prescribed, including inhalers.\n",
+                    "- Consider joining a pulmonary rehabilitation program.\n"
+                ]
+            }
+        else:
+            data = {
+                "Target": ["FEV1"],
+                "Goal": ["> 70%"],
+                "Time Frame": ["Ongoing"],
+                "Monitoring": ["Every 6 months"],
+                "Notes": [
+                    "- Maintain a smoke-free environment.\n"
+                    "- Engage in light exercises to strengthen lungs.\n"
+                ]
+            }
+
+    elif condition == "Asthma":
+        if risk == "High":
+            data = {
+                "Target": ["Symptom Control", "Medication Adherence"],
+                "Goal": ["< 2 uses/week", "100%"],
+                "Time Frame": ["Ongoing", "Ongoing"],
+                "Monitoring": ["Every 1-3 months", "Each visit"],
+                "Notes": [
+                    "- Follow your asthma action plan closely.\n"
+                    "- Identify and avoid known triggers.\n",
+                    "- Carry your rescue inhaler at all times.\n"
+                ]
+            }
+        else:
+            data = {
+                "Target": ["Symptom Control"],
+                "Goal": ["< 2 uses/week"],
+                "Time Frame": ["Ongoing"],
+                "Monitoring": ["Every 3-6 months"],
+                "Notes": [
+                    "- Continue using daily controller medications as directed.\n"
+                    "- Avoid triggers like dust and pollen.\n"
+                ]
+            }
+
+    # Ensure all lists are of the same length
+    max_length = max(len(data["Target"]), len(data["Goal"]), len(data["Time Frame"]), len(data["Monitoring"]), len(data["Notes"]))
+    
+    for key in data.keys():
+        while len(data[key]) < max_length:
+            data[key].append("")
+
+    return pd.DataFrame(data)
+
 # Streamlit UI Setup
 st.title("Chronic Disease Risk Assessment Tool")
 
@@ -172,11 +287,11 @@ with tab3:
     st.header("COPD Risk Assessment")
     smoking_years = st.number_input("Years of Smoking", min_value=0, max_value=50, value=10, key="smoking_years")
     age = st.number_input("Age", min_value=18, max_value=120, value=50, key="copd_age")
-    fev1 = st.number_input("FEV1 (%)", min_value=10, max_value=120, value=80, key="fev1")
-    exacerbations = st.number_input("Exacerbations in Last Year", min_value=0, max_value=10, value=1, key="exacerbations")
+    fev1 = st.number_input("FEV1 (%)", min_value=20, max_value=100, value=80, key="fev1")
+    exacerbations_last_year = st.number_input("Exacerbations in Last Year", min_value=0, max_value=10, value=1, key="exacerbations")
 
     if st.button("Calculate COPD Risk"):
-        copd_risk = calculate_copd_risk(smoking_years, age, fev1, exacerbations)
+        copd_risk = calculate_copd_risk(smoking_years, age, fev1, exacerbations_last_year)
         st.write(f"**COPD Risk Level**: {copd_risk}")
         st.session_state['results']["COPD"] = copd_risk
         st.write(ai_assistant_response("COPD", copd_risk))
@@ -184,24 +299,46 @@ with tab3:
 # Asthma Risk Tab
 with tab4:
     st.header("Asthma Risk Assessment")
-    freq_symptoms = st.number_input("Frequency of Symptoms per Week", min_value=0, max_value=10, value=2, key="freq_symptoms")
-    night_symptoms = st.number_input("Nighttime Symptoms per Month", min_value=0, max_value=10, value=1, key="night_symptoms")
-    inhaler_use = st.number_input("Inhaler Use per Week", min_value=0, max_value=10, value=1, key="inhaler_use")
-    fev1 = st.number_input("FEV1 (%)", min_value=10, max_value=120, value=80, key="asthma_fev1")
-    eosinophils = st.number_input("Eosinophil Count", min_value=0, max_value=1000, value=200, key="eosinophils")
+    frequency_of_symptoms = st.slider("Frequency of Symptoms (0-7 days/week)", 0, 7, 2, key="frequency_of_symptoms")
+    nighttime_symptoms = st.slider("Nighttime Symptoms (0-7 days/week)", 0, 7, 1, key="nighttime_symptoms")
+    inhaler_use = st.slider("Inhaler Use (0-7 days/week)", 0, 7, 2, key="inhaler_use")
+    fev1_asthma = st.number_input("FEV1 (%) - Asthma", min_value=20, max_value=100, value=80, key="fev1_asthma")
+    eosinophil_count = st.number_input("Eosinophil Count (cells/μL)", min_value=0, max_value=1000, value=300, key="eosinophil_count")
 
     if st.button("Calculate Asthma Risk"):
-        asthma_risk = calculate_asthma_risk(freq_symptoms, night_symptoms, inhaler_use, fev1, eosinophils)
+        asthma_risk = calculate_asthma_risk(frequency_of_symptoms, nighttime_symptoms, inhaler_use, fev1_asthma, eosinophil_count)
         st.write(f"**Asthma Risk Level**: {asthma_risk}")
         st.session_state['results']["Asthma"] = asthma_risk
         st.write(ai_assistant_response("Asthma", asthma_risk))
 
 # Unified Care Plan Tab
 with tab5:
-    st.header("Patient-Friendly Care Plan")
-
+    st.header("Unified Care Plan")
     if st.session_state['results']:
-        st.write("### Your Personalized Care Plan")
-        st.write(patient_friendly_care_plan(st.session_state['results']))
-    else:
-        st.write("No assessments completed yet.")
+        st.write("### Suggested Patient-Friendly Care Plan")
+        patient_care_plan = patient_friendly_care_plan(st.session_state['results'])
+        st.write(patient_care_plan)
+
+        # Create a comprehensive table for the unified care plan
+        st.write("### Care Plan Targets Table")
+        for condition, risk in st.session_state['results'].items():
+            st.write(f"#### Care Plan for {condition} - Risk Level: {risk}")
+            care_plan_table = create_unified_care_plan_table(condition, risk)
+            st.dataframe(care_plan_table)
+
+# Educational Resources Section
+st.write("---")
+st.header("Educational Resources")
+st.write("Here are some trusted resources for chronic disease management:")
+st.write("- [American Diabetes Association (ADA)](https://www.diabetes.org)")
+st.write("- [American Heart Association (AHA)](https://www.heart.org)")
+st.write("- [Global Initiative for Chronic Obstructive Lung Disease (GOLD)](https://goldcopd.org)")
+st.write("- [Asthma and Allergy Foundation of America (AAFA)](https://www.aafa.org)")
+
+# Footer Section
+st.write("---")
+st.header("Feedback and Support")
+st.write("We value your feedback! Please let us know how we can improve this application or if you need further assistance.")
+feedback = st.text_area("Your Feedback:", height=100)
+if st.button("Submit Feedback"):
+    st.success("Thank you for your feedback!")
