@@ -138,12 +138,9 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["6 months", "6 months", "Ongoing"],
                 "Monitoring": ["Every 3 months", "Every 3 months", "Weekly check-ins"],
                 "Notes": [
-                    "- Eat more fruits and vegetables daily.\n"
-                    "- Reduce salt and saturated fat intake.\n"
-                    "- Schedule 30-minute walks, 5 days a week.\n",
-                    "- Include healthy fats like avocado and nuts.\n"
-                    "- Choose whole grains over refined ones.\n",
-                    "- Track weekly activity using a journal or app.\n"
+                    "Eat more fruits and vegetables.",
+                    "Limit salt and saturated fats.",
+                    "Schedule regular walks or exercises."
                 ]
             }
         else:
@@ -153,9 +150,8 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["Ongoing", "Ongoing"],
                 "Monitoring": ["Annually", "Weekly check-ins"],
                 "Notes": [
-                    "- Maintain a balanced diet with whole foods.\n"
-                    "- Limit processed foods and sugar intake.\n",
-                    "- Incorporate light exercises like walking or cycling.\n"
+                    "Maintain a balanced diet.",
+                    "Engage in regular physical activity."
                 ]
             }
 
@@ -167,9 +163,9 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["3 months", "3 months", "Ongoing"],
                 "Monitoring": ["Every 3 months", "Every 3 months", "Weekly check-ins"],
                 "Notes": [
-                    "- Follow a diabetes meal plan focusing on low GI foods.\n"
-                    "- Measure blood sugar before meals.\n",
-                    "- Engage in regular moderate exercise like brisk walking.\n"
+                    "Follow a diabetes meal plan.",
+                    "Monitor blood sugar levels daily.",
+                    "Incorporate regular physical activity."
                 ]
             }
         else:
@@ -179,8 +175,8 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["Annual", "Ongoing"],
                 "Monitoring": ["Annually", "Weekly check-ins"],
                 "Notes": [
-                    "- Continue healthy eating habits, including whole grains.\n"
-                    "- Stay active with activities you enjoy, like dancing.\n"
+                    "Continue healthy eating habits.",
+                    "Stay active and maintain a routine."
                 ]
             }
 
@@ -192,9 +188,9 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["Ongoing", "Ongoing"],
                 "Monitoring": ["Every 1-3 months", "Every visit"],
                 "Notes": [
-                    "- Avoid smoking and secondhand smoke.\n"
-                    "- Use medications as prescribed, including inhalers.\n",
-                    "- Consider joining a pulmonary rehabilitation program.\n"
+                    "Participate in pulmonary rehab.",
+                    "Avoid smoking and secondhand smoke.",
+                    "Stay away from allergens."
                 ]
             }
         else:
@@ -202,10 +198,10 @@ def create_unified_care_plan_table(condition, risk):
                 "Target": ["FEV1"],
                 "Goal": ["> 70%"],
                 "Time Frame": ["Ongoing"],
-                "Monitoring": ["Every 6 months"],
+                "Monitoring": ["Biannually"],
                 "Notes": [
-                    "- Maintain a smoke-free environment.\n"
-                    "- Engage in light exercises to strengthen lungs.\n"
+                    "Continue avoiding smoking.",
+                    "Engage in light exercises."
                 ]
             }
 
@@ -217,9 +213,9 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["Ongoing", "Ongoing"],
                 "Monitoring": ["Every 1-3 months", "Each visit"],
                 "Notes": [
-                    "- Follow your asthma action plan closely.\n"
-                    "- Identify and avoid known triggers.\n",
-                    "- Carry your rescue inhaler at all times.\n"
+                    "Adhere to asthma action plan.",
+                    "Identify and avoid triggers.",
+                    "Carry rescue inhaler at all times."
                 ]
             }
         else:
@@ -229,8 +225,8 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["Ongoing"],
                 "Monitoring": ["Every 3-6 months"],
                 "Notes": [
-                    "- Continue using daily controller medications as directed.\n"
-                    "- Avoid triggers like dust and pollen.\n"
+                    "Continue daily controller medication.",
+                    "Avoid known triggers."
                 ]
             }
 
