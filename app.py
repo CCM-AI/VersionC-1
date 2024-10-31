@@ -179,8 +179,8 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["Annual", "Ongoing"],
                 "Monitoring": ["Annually", "Weekly check-ins"],
                 "Notes": [
-                    "- Continue healthy eating habits, including whole grains.\n"
-                    "- Stay active with activities you enjoy, like dancing.\n"
+                    "- Continue healthy eating habits with portion control.\n"
+                    "- Incorporate physical activities into daily routine.\n"
                 ]
             }
 
