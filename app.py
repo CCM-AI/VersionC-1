@@ -374,7 +374,9 @@ video_resources = {
 # Display the videos for each condition
 for condition, videos in video_resources.items():
     st.subheader(f"{condition} Videos")
-    for
+    for video in videos:
+        st.video(video)  # Embed the video
+        st.markdown(f"[Watch here]({video})")  # Create a link to the video
 
 # Footer Section
 st.write("---")
