@@ -190,11 +190,10 @@ def create_unified_care_plan_table(condition, risk):
                 "Target": ["FEV1", "Exacerbations"],
                 "Goal": ["> 70%", "< 2 per year"],
                 "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Every visit"],
+                "Monitoring": ["Every 1-3 months", "Every 3 months"],
                 "Notes": [
-                    "- Avoid smoking and secondhand smoke.\n"
-                    "- Use medications as prescribed, including inhalers.\n",
-                    "- Consider joining a pulmonary rehabilitation program.\n"
+                    "- Stop smoking and avoid triggers.\n"
+                    "- Participate in pulmonary rehabilitation.\n"
                 ]
             }
         else:
@@ -202,10 +201,10 @@ def create_unified_care_plan_table(condition, risk):
                 "Target": ["FEV1"],
                 "Goal": ["> 70%"],
                 "Time Frame": ["Ongoing"],
-                "Monitoring": ["Every 6 months"],
+                "Monitoring": ["Biannual"],
                 "Notes": [
-                    "- Maintain a smoke-free environment.\n"
-                    "- Engage in light exercises to strengthen lungs.\n"
+                    "- Continue avoiding smoking and pollutants.\n"
+                    "- Maintain a healthy diet to support lung health.\n"
                 ]
             }
 
@@ -213,13 +212,12 @@ def create_unified_care_plan_table(condition, risk):
         if risk == "High":
             data = {
                 "Target": ["Symptom Control", "Medication Adherence"],
-                "Goal": ["< 2 uses/week", "100%"],
+                "Goal": ["< 2 days/week", "100%"],
                 "Time Frame": ["Ongoing", "Ongoing"],
-                "Monitoring": ["Every 1-3 months", "Each visit"],
+                "Monitoring": ["Monthly", "Monthly"],
                 "Notes": [
-                    "- Follow your asthma action plan closely.\n"
-                    "- Identify and avoid known triggers.\n",
-                    "- Carry your rescue inhaler at all times.\n"
+                    "- Use your rescue inhaler as prescribed.\n"
+                    "- Identify and avoid asthma triggers.\n"
                 ]
             }
         else:
@@ -229,138 +227,107 @@ def create_unified_care_plan_table(condition, risk):
                 "Time Frame": ["Ongoing"],
                 "Monitoring": ["Every 3-6 months"],
                 "Notes": [
-                    "- Continue using daily controller medications as directed.\n"
-                    "- Avoid triggers like dust and pollen.\n"
+                    "- Keep your inhaler with you at all times.\n"
+                    "- Practice breathing exercises daily.\n"
                 ]
             }
 
-    # Ensure all lists are of the same length
-    max_length = max(len(data["Target"]), len(data["Goal"]), len(data["Time Frame"]), len(data["Monitoring"]), len(data["Notes"]))
-    
-    for key in data.keys():
-        while len(data[key]) < max_length:
-            data[key].append("")
-
     return pd.DataFrame(data)
 
-# Streamlit UI Setup
-st.title("Chronic Disease Risk Assessment Tool")
+# Video library data (simplified for demonstration)
+video_library = [
+    {"Title": "Understanding Cardiovascular Disease", "URL": "https://www.example.com/video1"},
+    {"Title": "Managing Diabetes Effectively", "URL": "https://www.example.com/video2"},
+    {"Title": "COPD Management Strategies", "URL": "https://www.example.com/video3"},
+    {"Title": "Asthma Action Plan", "URL": "https://www.example.com/video4"},
+]
 
-# Initialize session state
-if 'results' not in st.session_state:
-    st.session_state['results'] = {}
+# Streamlit UI
+def main():
+    st.title("Chronic Disease Risk Assessment Tool")
 
-# Tabs for different conditions
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["Cardiovascular Risk", "Diabetes Risk", "COPD Risk", "Asthma Risk", "Unified Care Plan"])
+    # Create tabs for each functionality
+    tab1, tab2, tab3, tab4 = st.tabs(["Cardiovascular Risk", "Diabetes Risk", "COPD Risk", "Asthma Risk", "Unified Care Plan"])
 
-# Cardiovascular Risk Tab
-with tab1:
-    st.header("Cardiovascular Risk Assessment")
-    age = st.number_input("Age", min_value=18, max_value=120, value=50, key="cv_age")
-    systolic_bp = st.number_input("Systolic Blood Pressure (mmHg)", min_value=80, max_value=200, value=120, key="systolic_bp")
-    cholesterol = st.number_input("Cholesterol (mg/dL)", min_value=150, max_value=300, value=200, key="cholesterol")
-    smoker = st.checkbox("Smoker", key="smoker")
+    # Cardiovascular Risk Assessment
+    with tab1:
+        st.header("Cardiovascular Risk Assessment")
+        age = st.number_input("Age", min_value=18, max_value=120, value=50)
+        systolic_bp = st.number_input("Systolic Blood Pressure (mmHg)", min_value=80, max_value=200, value=120)
+        cholesterol = st.number_input("Cholesterol (mg/dL)", min_value=150, max_value=300, value=200)
+        smoker = st.checkbox("Smoker")
 
-    if st.button("Calculate Cardiovascular Risk"):
-        cardio_risk = calculate_cardio_risk(age, systolic_bp, smoker, cholesterol)
-        st.write(f"**Cardiovascular Risk Level**: {cardio_risk}")
-        st.session_state['results']["Cardiovascular"] = cardio_risk
-        st.write(ai_assistant_response("Cardiovascular", cardio_risk))
+        if st.button("Calculate Cardiovascular Risk"):
+            cardio_risk = calculate_cardio_risk(age, systolic_bp, smoker, cholesterol)
+            st.write(f"**Cardiovascular Risk Level**: {cardio_risk}")
+            st.write(ai_assistant_response("Cardiovascular", cardio_risk))
 
-# Diabetes Risk Tab
-with tab2:
-    st.header("Diabetes Risk Assessment")
-    bmi = st.number_input("BMI", min_value=10.0, max_value=50.0, value=25.0, key="bmi")
-    age = st.number_input("Age", min_value=18, max_value=120, value=50, key="diabetes_age")
-    family_history = st.checkbox("Family History of Diabetes", key="family_history")
-    fasting_glucose = st.number_input("Fasting Glucose (mg/dL)", min_value=50, max_value=300, value=100, key="fasting_glucose")
-    hba1c = st.number_input("HbA1c (%)", min_value=4.0, max_value=15.0, value=5.5, key="hba1c")
+    # Diabetes Risk Assessment
+    with tab2:
+        st.header("Diabetes Risk Assessment")
+        bmi = st.number_input("BMI", min_value=10, max_value=60, value=25)
+        family_history = st.checkbox("Family History of Diabetes")
+        fasting_glucose = st.number_input("Fasting Glucose (mg/dL)", min_value=60, max_value=300, value=100)
+        hba1c = st.number_input("HbA1c (%)", min_value=4.0, max_value=14.0, value=5.7)
 
-    if st.button("Calculate Diabetes Risk"):
-        diabetes_risk = calculate_diabetes_risk(bmi, age, family_history, fasting_glucose, hba1c)
-        st.write(f"**Diabetes Risk Level**: {diabetes_risk}")
-        st.session_state['results']["Diabetes"] = diabetes_risk
-        st.write(ai_assistant_response("Diabetes", diabetes_risk))
+        if st.button("Calculate Diabetes Risk"):
+            diabetes_risk = calculate_diabetes_risk(bmi, age, family_history, fasting_glucose, hba1c)
+            st.write(f"**Diabetes Risk Level**: {diabetes_risk}")
+            st.write(ai_assistant_response("Diabetes", diabetes_risk))
 
-# COPD Risk Tab
-with tab3:
-    st.header("COPD Risk Assessment")
-    smoking_years = st.number_input("Years of Smoking", min_value=0, max_value=50, value=10, key="smoking_years")
-    age = st.number_input("Age", min_value=18, max_value=120, value=50, key="copd_age")
-    fev1 = st.number_input("FEV1 (%)", min_value=20, max_value=100, value=80, key="fev1")
-    exacerbations_last_year = st.number_input("Exacerbations in Last Year", min_value=0, max_value=10, value=1, key="exacerbations")
+    # COPD Risk Assessment
+    with tab3:
+        st.header("COPD Risk Assessment")
+        smoking_years = st.number_input("Years of Smoking", min_value=0, max_value=100, value=10)
+        fev1 = st.number_input("FEV1 (%)", min_value=0, max_value=100, value=80)
+        exacerbations_last_year = st.number_input("Exacerbations Last Year", min_value=0, max_value=20, value=0)
 
-    if st.button("Calculate COPD Risk"):
-        copd_risk = calculate_copd_risk(smoking_years, age, fev1, exacerbations_last_year)
-        st.write(f"**COPD Risk Level**: {copd_risk}")
-        st.session_state['results']["COPD"] = copd_risk
-        st.write(ai_assistant_response("COPD", copd_risk))
+        if st.button("Calculate COPD Risk"):
+            copd_risk = calculate_copd_risk(smoking_years, age, fev1, exacerbations_last_year)
+            st.write(f"**COPD Risk Level**: {copd_risk}")
+            st.write(ai_assistant_response("COPD", copd_risk))
 
-# Asthma Risk Tab
-with tab4:
-    st.header("Asthma Risk Assessment")
-    frequency_of_symptoms = st.slider("Frequency of Symptoms (0-7 days/week)", 0, 7, 2, key="frequency_of_symptoms")
-    nighttime_symptoms = st.slider("Nighttime Symptoms (0-7 days/week)", 0, 7, 1, key="nighttime_symptoms")
-    inhaler_use = st.slider("Inhaler Use (0-7 days/week)", 0, 7, 2, key="inhaler_use")
-    fev1_asthma = st.number_input("FEV1 (%) - Asthma", min_value=20, max_value=100, value=80, key="fev1_asthma")
-    eosinophil_count = st.number_input("Eosinophil Count (cells/μL)", min_value=0, max_value=1000, value=300, key="eosinophil_count")
+    # Asthma Risk Assessment
+    with tab4:
+        st.header("Asthma Risk Assessment")
+        frequency_of_symptoms = st.number_input("Days with Symptoms per Week", min_value=0, max_value=7, value=2)
+        nighttime_symptoms = st.number_input("Nighttime Symptoms per Month", min_value=0, max_value=30, value=1)
+        inhaler_use = st.number_input("Rescue Inhaler Uses per Week", min_value=0, max_value=20, value=1)
+        eosinophil_count = st.number_input("Eosinophil Count", min_value=0, max_value=1000, value=300)
 
-    if st.button("Calculate Asthma Risk"):
-        asthma_risk = calculate_asthma_risk(frequency_of_symptoms, nighttime_symptoms, inhaler_use, fev1_asthma, eosinophil_count)
-        st.write(f"**Asthma Risk Level**: {asthma_risk}")
-        st.session_state['results']["Asthma"] = asthma_risk
-        st.write(ai_assistant_response("Asthma", asthma_risk))
+        if st.button("Calculate Asthma Risk"):
+            asthma_risk = calculate_asthma_risk(frequency_of_symptoms, nighttime_symptoms, inhaler_use, fev1, eosinophil_count)
+            st.write(f"**Asthma Risk Level**: {asthma_risk}")
+            st.write(ai_assistant_response("Asthma", asthma_risk))
 
-# Unified Care Plan Tab
-with tab5:
-    st.header("Unified Care Plan")
-    if st.session_state['results']:
-        st.write("### Suggested Patient-Friendly Care Plan")
-        patient_care_plan = patient_friendly_care_plan(st.session_state['results'])
-        st.write(patient_care_plan)
+    # Unified Care Plan Tab
+    with tab4:
+        st.header("Unified Care Plan")
+        
+        # Collecting results for care plan
+        results = {
+            "Cardiovascular": cardio_risk,
+            "Diabetes": diabetes_risk,
+            "COPD": copd_risk,
+            "Asthma": asthma_risk
+        }
 
-        # Create a comprehensive table for the unified care plan
-        st.write("### Care Plan Targets Table")
-        for condition, risk in st.session_state['results'].items():
-            st.write(f"#### Care Plan for {condition} - Risk Level: {risk}")
+        care_plan = patient_friendly_care_plan(results)
+        st.write(care_plan)
+
+        # Displaying unified care plan table
+        st.write("### Unified Care Plan Table")
+        for condition, risk in results.items():
             care_plan_table = create_unified_care_plan_table(condition, risk)
+            st.write(f"#### {condition} - Risk Level: {risk}")
             st.dataframe(care_plan_table)
 
-import streamlit as st
+        # Video Library Section
+        st.write("### Video Library")
+        st.write("Explore these resources to learn more about managing chronic diseases:")
+        for video in video_library:
+            st.markdown(f"- [{video['Title']}]({video['URL']})")
 
-# Function to display the video library
-def video_library():
-    st.header("Video Library")
-    st.write("Here are some useful videos on health management:")
-
-    # Updated video links
-    videos = [
-        {"title": "Keep Your Asthma Controlled", "url": "https://www.youtube.com/shorts/SqG13EtRIAo"},
-        {"title": "Check Inhalers Use Technique", "url": "https://www.youtube.com/watch?v=2dVnDkpymYk"},
-        {"title": "Risk Factors for Cardiovascular Disease", "url": "https://www.youtube.com/watch?v=SRioi_6Yh18"},
-        {"title": "Keep Your Diabetes Under Control", "url": "https://www.youtube.com/watch?feature=shared&v=qG3OyONVbEQ"},
-        {"title": "Physical Activity", "url": "https://www.youtube.com/watch?feature=shared&v=IF8IEj8Rzvg"},
-        {"title": "Diet", "url": "https://www.youtube.com/watch?v=c5Cgmwi-oRI"},
-        {"title": "Hypertension", "url": "https://www.youtube.com/watch?feature=shared&v=NG17qcXYxYQ"},
-        {"title": "Smoking", "url": "https://www.youtube.com/watch?feature=shared&v=24eovpnitPk"},
-        {"title": "High Cholesterol", "url": "https://www.youtube.com/watch?feature=shared&v=G3AIYdJdfDk"},
-        {"title": "Stress", "url": "https://www.youtube.com/watch?feature=shared&v=QODuDQwsJ80"},
-        {"title": "Maintain Healthy Weight", "url": "https://www.youtube.com/watch?feature=shared&v=_ZtgTotfAfQ"},
-    ]
-
-    for video in videos:
-        st.video(video["url"], start_time=0)  # Embed the video
-        st.markdown(f"[{video['title']}]({video['url']})")  # Link to the video
-
-# Call the function to display the video library
+# Run the Streamlit app
 if __name__ == "__main__":
-    video_library()
-
-
-# Footer Section
-st.write("---")
-st.header("Feedback and Support")
-st.write("We value your feedback! Please let us know how we can improve this application or if you need further assistance.")
-feedback = st.text_area("Your Feedback:", height=100)
-if st.button("Submit Feedback"):
-    st.success("Thank you for your feedback!")
+    main()
